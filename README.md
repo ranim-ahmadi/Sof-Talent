@@ -1,7 +1,7 @@
 # Sof-Talent
-# 🧠 Sof'Talent – Smart CV and Skills Management Platform
+# 🧠 Sof'Talent Smart CV and Skills Management Platform
 
-**Sof'Talent** is more than a simple CV tool — it's a complete ecosystem that redefines how companies manage employee profiles and internal skills. The platform centralizes and standardizes CV generation, skills analysis, and internal mobility management through a modern and intelligent web solution.
+**Sof'Talent** is more than a simple CV tool it's a complete ecosystem that redefines how companies manage employee profiles and internal skills. The platform centralizes and standardizes CV generation, skills analysis, and internal mobility management through a modern and intelligent web solution.
 
 ## 🚀 Key Features
 
@@ -44,7 +44,7 @@
 ## 🛠️ Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/softalent.git
+git clone 
 cd softalent
 
 # Using Docker
