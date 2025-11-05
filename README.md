@@ -34,7 +34,7 @@
 
 | Category | Technologies |
 |----------|-------------|
-| **Backend** | Django REST Framework + ASGI (Daphne/Uvicorn) |
+| **Backend** | Django REST Framework + ASGI (Daphne) |
 | **Frontend** | Angular |
 | **Database** | PostgreSQL 16 |
 | **Cache & Message Broker** | Redis |
@@ -69,4 +69,4 @@ npm install
 ng serve
 ```
 
-**Made with ❤️ by Ranim Ahmadi**
+
