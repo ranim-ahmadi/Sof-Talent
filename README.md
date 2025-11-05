@@ -34,10 +34,12 @@
 
 | Category | Technologies |
 |----------|-------------|
-| **Backend** | Django REST Framework |
+| **Backend** | Django REST Framework + ASGI (Daphne/Uvicorn) |
 | **Frontend** | Angular |
 | **Database** | PostgreSQL 16 |
-| **AI / NLP** | NLTK, Transformers |
+| **Cache & Message Broker** | Redis |
+| **AI / NLP** | NLTK, Hugging Face Transformers |
+| **Real-time Communication** | WebSockets (Django Channels) |
 | **Authentication** | Token-based (DRF Authtoken) |
 | **Visualization** | Chart.js |
 | **Containerization** | Docker |
@@ -57,6 +59,11 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
+# Start Redis server
+redis-server
+
+# Run with ASGI server
+daphne -b 0.0.0.0 -p 8000 config.asgi:application
 # Frontend
 npm install
 ng serve
