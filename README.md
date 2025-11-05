@@ -2,6 +2,7 @@
 # 🧠 Sof'Talent Smart CV and Skills Management Platform
 
 **Sof'Talent** is more than a simple CV tool it's a complete ecosystem that redefines how companies manage employee profiles and internal skills. The platform centralizes and standardizes CV generation, skills analysis, and internal mobility management through a modern and intelligent web solution.
+> **Note**: This repository contains a partial version of the project. Some components and features remain confidential due to proprietary business logic and company policies.
 
 ## 🚀 Key Features
 
