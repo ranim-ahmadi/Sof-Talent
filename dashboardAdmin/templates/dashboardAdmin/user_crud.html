@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if user %}Modifier{% else %}Créer{% endif %} un utilisateur</title>
+</head>
+<body>
+    <h1>{% if user %}Modifier{% else %}Créer{% endif %} un utilisateur</h1>
+
+    Affichage des messages
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+   <form method="POST">
+    {% csrf_token %}
+    {{ form.email }}
+    {{ form.role }}
+
+    <button type="submit">{% if user %}Modifier{% else %}Créer{% endif %}</button>
+</form>
+    <br>
+    <a href="{% url 'admin_dashboard' %}">Retour à la liste des utilisateurs</a>
+</body>
+</html>
