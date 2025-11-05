@@ -52,13 +52,11 @@ docker-compose up -d
 
 
 # Backend
-cd backend
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
 # Frontend
-cd frontend
 npm install
 ng serve
 ```
