@@ -44,13 +44,13 @@
 ## 🛠️ Installation
 ```bash
 # Clone the repository
-git clone 
-cd softalent
+git clone https://github.com/ranim-ahmadi/Sof-Talent.git
+
 
 # Using Docker
 docker-compose up -d
 
-# Or manual setup
+
 # Backend
 cd backend
 pip install -r requirements.txt
