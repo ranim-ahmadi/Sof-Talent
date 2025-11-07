@@ -1,0 +1,108 @@
+<div class="form-container">
+  <div class="logo-container">
+    <img src="assets/logo.png" alt="Logo Sofrecom" class="logo">
+  </div>
+
+  <form [formGroup]="cvForm" (ngSubmit)="onSubmit()" class="cv-form">
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="poste_actuel">Poste actuel</label>
+          <input id="poste_actuel" formControlName="poste_actuel">
+        </div>
+        <div class="form-field">
+          <label for="title">Titre CV</label>
+          <input id="title" formControlName="title">
+        </div>
+        <div class="form-field">
+          <label for="annees_experience">Années d'expérience</label>
+          <input id="annees_experience" type="number" formControlName="annees_experience">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="overview">Présentation</label>
+        <textarea id="overview" formControlName="overview"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="skills">Compétences</label>
+          <textarea id="skills" formControlName="skills" (input)="adjustTextareaHeight($event)"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="languages">Langues</label>
+          <textarea id="languages" formControlName="languages" (input)="adjustTextareaHeight($event)"></textarea>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="certifications">Certifications</label>
+        <textarea id="certifications" formControlName="certifications" (input)="adjustTextareaHeight($event)"></textarea>
+      </div>
+
+      <div class="experience-section">
+        <div class="form-field">
+          <label>Expériences professionnelles</label>
+          <div formArrayName="experiences" class="experience-list">
+            <div *ngFor="let exp of experiences.controls; let i=index" [formGroupName]="i" class="experience-item">
+              <div class="form-row experience-row">
+                <div class="form-field">
+                  <label [for]="'employeur-' + i">Employeur</label>
+                  <input [id]="'employeur-' + i" formControlName="employeur">
+                </div>
+                <div class="form-field">
+                  <label [for]="'position-' + i">Poste</label>
+                  <input [id]="'position-' + i" formControlName="position">
+                </div>
+              </div>
+              <div class="form-field">
+                <label [for]="'missions-' + i">Missions</label>
+                <textarea [id]="'missions-' + i" formControlName="missions" (input)="adjustTextareaHeight($event)"></textarea>
+              </div>
+              <div class="form-field">
+                <label [for]="'technologies-' + i">Technologies</label>
+                <textarea [id]="'technologies-' + i" formControlName="technologies" (input)="adjustTextareaHeight($event)"></textarea>
+              </div>
+              <div class="form-row experience-row">
+                <div class="form-field">
+                  <label [for]="'date_debut-' + i">Date de début</label>
+                  <input [id]="'date_debut-' + i" type="date" formControlName="date_debut">
+                </div>
+                <div class="form-field">
+                  <label [for]="'date_fin-' + i">Date de fin</label>
+                  <input [id]="'date_fin-' + i" type="date" formControlName="date_fin">
+                </div>
+              </div>
+              <div class="button-container" *ngIf="i > 0">
+                <button type="button" class="remove-btn" (click)="removeExperience(i)">Supprimer</button>
+              </div>
+            </div>
+            <button type="button" class="add-experience-btn" (click)="addExperience()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Affichage du message de succès en permanence -->
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" [disabled]="isLoading">
+          {{ isLoading ? 'Traitement en cours...' : (isEditMode ? 'Mettre à jour' : 'Enregistrer') }}
+        </button>
+        
+        <!-- Boutons pour télécharger et prévisualiser le CV (visible uniquement en mode édition) -->
+        <div *ngIf="isEditMode && cvId" class="cv-actions">
+          <button type="button" class="download-btn" (click)="downloadCV()" [disabled]="isLoading">
+            Télécharger CV
+          </button>
+          <button type="button" class="preview-btn" (click)="previewCV()" [disabled]="isLoading">
+            Visualiser CV
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,89 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$user-project-primary: mat.define-palette(mat.$indigo-palette);
+$user-project-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$user-project-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$user-project-theme: mat.define-light-theme((
+  color: (
+    primary: $user-project-primary,
+    accent: $user-project-accent,
+    warn: $user-project-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($user-project-theme);
+
+/* Définir la couleur principale bleue et orange */
+$primary-color: #007bff; /* Bleu */
+$secondary-color: #ff6600; /* Orange */
+$light-orange: #ff8533; /* Orange plus clair */
+
+/* Appliquer les couleurs */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.text-primary {
+  color: $primary-color !important;
+}
+
+.text-orange {
+  color: $secondary-color !important;
+}
+
+.btn-orange {
+  background-color: $secondary-color;
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: $light-orange;
+  }
+}
+
+.container {
+  max-width: 600px;
+}
+
+h3 {
+  color: $primary-color;
+  font-size: 28px;
+}
+
+/* Ajouter un style pour le logo */
+img {
+  max-width: 150px;
+  height: auto;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

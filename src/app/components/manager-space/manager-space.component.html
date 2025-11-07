@@ -1,0 +1,100 @@
+<!-- En-tête -->
+<header class="header">
+  <div class="header-container">
+    <!-- Logo Sofrecom à gauche -->
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo-img">
+    </div>
+
+    <!-- Logo centré à la place du titre -->
+    <div class="title-container">
+      <img src="assets/soff.png" alt="Logo Sof'Talent" class="logo-title">
+    </div>
+
+    <!-- Utilisateur à droite -->
+    <div class="user-info">
+      <img src="assets/user.png" alt="User Icon" class="user-icon">
+      <div class="user-details">
+        <span class="username">{{ username }}</span>
+        <span class="manager-name" *ngIf="managerName !== 'Aucun'">Manager: {{ managerName }}</span>
+      </div>
+      <button class="logout-btn" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</header>
+
+<!-- Conteneur principal avec sidebar et contenu -->
+<div class="main-container">
+  <!-- Sidebar (affichée uniquement pour les managers) -->
+  <div class="sidebar">
+    <h3 class="sidebar-title">
+      <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+    </h3>
+    <ul class="sidebar-menu">
+      <li>
+        <a [routerLink]="['/choose-cv-actions']" routerLinkActive="active-link">
+          <img src="assets/home-icon.png" alt="Home Icon" class="menu-icon"> Accueil
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/kpi-dashboard']" routerLinkActive="active-link">
+          <img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/search-profile']" routerLinkActive="active-link">
+          <img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/upload-job-description']" routerLinkActive="active-link">
+          <img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Fiche de poste
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="manager-space-container" [ngClass]="{'with-sidebar': true}">
+    <!-- Indicateur de chargement -->
+    <p *ngIf="isLoading" class="loading-text">Chargement...</p>
+    <!-- Message d'erreur -->
+    <p class="error" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</p>
+    <!-- Tableau des CVs -->
+    <div class="cv-table-container" *ngIf="!isLoading">
+      <div *ngIf="teamCVs.length === 0" class="alert alert-info">
+        Aucun CV trouvé pour les membres de votre équipe.
+      </div>
+      <table *ngIf="teamCVs.length > 0">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Poste actuel</th>
+            <th>Manager</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cv of filterCVs()">
+            <td>{{ cv.username }}</td>
+            <td>{{ cv.poste_actuel }}</td>
+            <td>{{ cv.managed_by || 'Aucun' }}</td>
+            <td>
+              <button class="action-btn btn-visualiser" (click)="previewCv(cv)">Visualiser</button>
+              <button class="action-btn btn-telecharger" (click)="downloadCv(cv)">Télécharger</button>
+              <button class="action-btn btn-modifier" (click)="updateCv(cv)">Modifier</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Contrôles de pagination avec numéros -->
+      <div class="pagination-controls" *ngIf="teamCVs.length > 0">
+        <button class="action-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+        <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+          <button class="action-btn" (click)="setPage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+        </ng-container>
+        <button class="action-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+      </div>
+    </div>
+  </div>
+</div>

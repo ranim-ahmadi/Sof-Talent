@@ -1,0 +1,26 @@
+.notification-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.notification {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  max-width: 300px;
+
+  &.new {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    animation: fadeIn 0.5s;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

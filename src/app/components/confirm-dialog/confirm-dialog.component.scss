@@ -1,0 +1,37 @@
+.dialog-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button.action-btn {
+    padding: 8px 16px;
+    min-width: 100px;
+    font-size: 16px;
+    background-color: #2196f3; /* Bleu personnalisé */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+  }
+  
+  button.action-btn:hover {
+    background-color: #ff9800; /* Orange au survol */
+    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+  }
+  
+  button.action-btn:active {
+    background-color: #e65100; /* Orange foncé au clic */
+    transform: scale(1); /* Retour à la taille normale lors du clic */
+  }
+  
+  button.action-btn:focus {
+    outline: none;
+  }
+  

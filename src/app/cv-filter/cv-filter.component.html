@@ -1,0 +1,56 @@
+<div class="container mt-4">
+    <!-- Logo -->
+    <div class="header text-center mb-4">
+      <img src="assets/logo.png" alt="Sofrecom Logo" class="logo mb-2">
+    </div>
+  
+    <!-- Barre de recherche -->
+    <div class="row mb-4">
+      <div class="col-md-6 offset-md-3">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+           
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="searchCVs()"
+          />
+          <button class="btn btn-primary" (click)="searchCVs()">Rechercher</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message d'erreur -->
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Rés Wultats -->
+    <div class="row" *ngIf="cvs.length > 0">
+      <div class="col-md-12">
+        <h5 class="text-center mb-3">Résultats de la recherche ({{ count }} CVs trouvés)</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Poste actuel</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cv of cvs">
+                <td>{{ cv.username }}</td>
+                <td>{{ cv.email }}</td>
+                <td>{{ cv.poste_actuel }}</td>
+                <td>
+                  <button class="btn btn-info btn-sm" (click)="viewCV(cv)">Visualiser</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,31 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo et titre -->
+    <div class="text-center mb-3">
+      <img src="assets/logo.png" alt="logo" style="max-width: 180px;">
+    </div>
+
+    <form (ngSubmit)="onLogin()">
+      <div class="form-group mb-3">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="credentials.email" name="email" required>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" class="form-control" [(ngModel)]="credentials.password" name="password" required>
+      </div>
+
+      <div class="form-group text-center mt-3">
+        <button type="submit" class="btn btn-orange">Se connecter</button>
+      </div>
+
+      <div class="text-center mt-3">
+        <p class="signup-text">
+          Pas encore de compte ?
+          <a [routerLink]="['/register']" class="text-orange">S'inscrire</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

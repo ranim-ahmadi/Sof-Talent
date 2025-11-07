@@ -1,0 +1,119 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo Sofrecom à gauche -->
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo-img">
+    </div>
+    <!-- Informations utilisateur à droite -->
+    <div class="user-info">
+      <img src="assets/user.png" alt="User Icon" class="user-icon">
+      <div class="user-details">
+        <span class="username">{{ username }}</span>
+        <span class="manager-name" *ngIf="managerName !== 'Aucun'">Manager: {{ managerName }}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="main-container">
+  <!-- Sidebar (affichée uniquement pour les managers) -->
+  <div class="sidebar" *ngIf="userRole === 'manager'">
+    <h3 class="sidebar-title">
+      <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+    </h3>
+    <ul class="sidebar-menu">
+      <li><a [routerLink]="['/manager-space']"><img src="assets/cv-icon.png" alt="CV Icon" class="menu-icon"> CVs équipe</a></li>
+      <li><a [routerLink]="['/fiche-poste-form']"><img src="assets/pdf-file.png" alt="CV Icon" class="menu-icon"> Créer fiche de poste</a></li>
+      <li><a [routerLink]="['/kpi-dashboard']"><img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI</a></li>
+      <li><a [routerLink]="['/choose-cv-actions']"><img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil</a></li>
+      <li><a [routerLink]="['/upload-job-description']"><img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Téléverser fiche de poste</a></li>
+      <li><a [routerLink]="['/job-history']"><img src="assets/historique.png" alt="History Icon" class="menu-icon"> Historique fiches</a></li>
+    </ul>
+  </div>
+
+  <div class="job-history-container" [ngClass]="{'with-sidebar': userRole === 'manager'}">
+    <h2 class="history-title">Historique des fiches de poste</h2>
+    <!-- Bouton Rafraîchir l'historique déplacé en haut sous le titre -->
+    <div class="refresh-container">
+      <button class="refresh-btn small" (click)="refreshHistory()">Rafraîchir l'historique</button>
+    </div>
+    <div class="history-content">
+      <div class="cv-table-container">
+        <table class="history-table" *ngIf="jobHistory.length > 0">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Date d'upload</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let job of paginatedJobs">
+              <td>{{ job.jobTitle }}</td>
+              <td>{{ job.uploadedAt }}</td>
+              <td>
+                <button class="action-btn btn-visualiser" (click)="viewJobFile(job.fileId)">Voir fiche</button>
+                <button class="action-btn btn-telecharger" (click)="viewJobMatches(job.fileId)">Voir résultats</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="no-history-message" *ngIf="jobHistory.length === 0">
+          <p>Aucun historique disponible.</p>
+        </div>
+        <!-- Contrôles de pagination avec plage dynamique -->
+        <div class="pagination-controls" *ngIf="jobHistory.length > 0">
+          <button class="action-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1"><</button>
+          <ng-container *ngFor="let page of visiblePages">
+            <button class="action-btn" (click)="setPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+          </ng-container>
+          <button class="action-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-report-container" *ngIf="showDetail" [@fadeAnimation]>
+      <div class="detail-report-content">
+        <h2 class="history-title">Résultats de correspondance</h2>
+        <button class="action-btn close-btn" (click)="closeDetailReport()">Fermer</button>
+        <div class="matching-results-container" *ngIf="matchingResults.length > 0">
+          <div class="cv-table-container">
+            <table class="matching-table">
+              <thead>
+                <tr>
+                  <th>Score final (%)</th>
+                  <th>Collaborateur</th>
+                  <th>Manager</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let result of matchingResults">
+                  <td>{{ result.match_percentage.toFixed(1) }}</td>
+                  <td>{{ result.username || 'Inconnu' }}</td>
+                  <td>{{ result.manager || 'Aucun' }}</td>
+                  <td>
+                    <button class="action-btn detail-btn" (click)="showDetailReport(result.cv_id)">Plus de détails</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="report-section" *ngIf="selectedResult">
+          <h2 class="history-title">Informations détaillées</h2>
+          <div class="report-details">
+            <p><strong>Titre actuel :</strong> {{ selectedResult.title || 'Non spécifié' }}</p>
+            <p><strong>Années d'expérience :</strong> {{ selectedResult.annees_experience || 0 }} ans</p>
+            <p><strong>Compétences :</strong> {{ (selectedResult.skills || []).join(', ') }}</p>
+            <p><strong>Similitude du titre :</strong> {{ selectedResult.raw_scores?.title_similarity || 0 }}%</p>
+            <p><strong>Similitude de l'expérience :</strong> {{ selectedResult.raw_scores?.experience_similarity || 0 }}%</p>
+            <p><strong>Similitude des compétences :</strong> {{ selectedResult.raw_scores?.skills_similarity || 0 }}%</p>
+            <p><strong>Score final :</strong> {{ selectedResult.match_percentage?.toFixed(1) || 0 }}%</p>
+            <p><strong>Compétences correspondantes :</strong> {{ (selectedResult.matched_skills || []).join(', ') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

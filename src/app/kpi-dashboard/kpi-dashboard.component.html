@@ -1,0 +1,205 @@
+<!-- En-tête (conforme à choose-cv-actions) -->
+<header class="header">
+  <div class="header-container">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo-img">
+    </div>
+    <div class="user-info">
+      <img src="assets/user.png" alt="User Icon" class="user-icon">
+      <div class="user-details">
+        <span class="username">{{ username }}</span>
+        <span class="manager-name" *ngIf="managerName !== 'Aucun'">Manager: {{ managerName }}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="main-container">
+  <div class="sidebar" *ngIf="userRole === 'manager'">
+    <h3 class="sidebar-title">
+      <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+    </h3>
+    <ul class="sidebar-menu">
+      <li><a [routerLink]="['/manager-space']"><img src="assets/cv-icon.png" alt="CV Icon" class="menu-icon"> CVs équipe</a></li>
+      <li><a [routerLink]="['/kpi-dashboard']"><img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI</a></li>
+      <li><a [routerLink]="['/choose-cv-actions']"><img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil</a></li>
+      <li><a [routerLink]="['/upload-job-description']"><img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Fiche de poste</a></li>
+    </ul>
+  </div>
+
+  <div class="dashboard-container" [ngClass]="{'with-sidebar': userRole === 'manager'}">
+    <div class="row mb-4">
+      <div class="col-md-6 offset-md-3">
+        <div class="search-bar d-flex align-items-center gap-3">
+          <input type="text" class="form-control search-input" [(ngModel)]="searchTerm" (keyup.enter)="filterCVs()" placeholder="Filtrer par compétence" />
+          <button class="btn btn-primary search-btn" (click)="filterCVs()">Filtrer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <!-- Résultats du filtrage par compétence avec pagination -->
+    <div class="row mb-4" *ngIf="cvs.length > 0">
+      <div class="col-md-12">
+        <h5 class="text-center mb-3">CVs correspondants ({{ cvs.length }} trouvés)</h5>
+        <div class="text-center mb-3">
+          <button class="btn btn-secondary" (click)="resetFilters()">Rafraîchir</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Poste actuel</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cv of getPaginatedCVs()">
+                <td>{{ cv.username || 'N/A' }}</td>
+                <td>{{ cv.email || 'N/A' }}</td>
+                <td>{{ cv.poste_actuel || 'N/A' }}</td>
+                <td><button class="btn-visualize" (click)="viewCV(cv)">Visualiser</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation" *ngIf="totalPages > 1">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="setPage(currentPage - 1)" href="javascript:void(0)">Précédent</a>
+              </li>
+              <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+                <a class="page-link" (click)="setPage(page)" href="javascript:void(0)">{{ page }}</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="setPage(currentPage + 1)" href="javascript:void(0)">Suivant</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique de répartition par seniorité -->
+    <div class="row mb-4">
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="seniorityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Résultats du filtrage par seniorité avec pagination -->
+    <div class="row mb-4" *ngIf="selectedSeniority">
+      <div class="col-md-12">
+        <h5 class="text-center mb-3">CVs pour {{ selectedSeniority }} ({{ seniorityCVs.length }} trouvés)</h5>
+        <div class="text-center mb-3">
+          <button class="btn btn-secondary" (click)="resetFilters()">Rafraîchir</button>
+        </div>
+        <div class="table-responsive">
+          <div *ngIf="seniorityCVs.length > 0; else noSeniorityCVs">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Email</th>
+                  <th>Poste actuel</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cv of getPaginatedSeniorityCVs()">
+                  <td>{{ cv.username || 'N/A' }}</td>
+                  <td>{{ cv.email || 'N/A' }}</td>
+                  <td>{{ cv.poste_actuel || 'N/A' }}</td>
+                  <td><button class="btn-visualize" (click)="viewCV(cv)">Visualiser</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation" *ngIf="totalPages > 1">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="setPage(currentPage - 1)" href="javascript:void(0)">Précédent</a>
+                </li>
+                <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+                  <a class="page-link" (click)="setPage(page)" href="javascript:void(0)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="setPage(currentPage + 1)" href="javascript:void(0)">Suivant</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <ng-template #noSeniorityCVs>
+            <p class="text-center">Aucun CV trouvé pour le niveau de seniorité "{{ selectedSeniority }}".</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte pour les statistiques générales -->
+    <div class="row mb-4" *ngIf="analytics">
+      <div class="col-md-12">
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="card overview-card">
+              <div class="card-body text-center">
+                <h6 class="card-title">Nombre de collaborateurs</h6> <!-- Remplacé "Profils" par "Nombre de collaborateurs" -->
+                <p class="card-text">{{ analytics.total_profiles }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau pour les compétences les plus pertinentes -->
+    <div class="row mb-4" *ngIf="filteredTopSkills && filteredTopSkills.length > 0">
+      <div class="col-md-12">
+        <h5 class="text-center mb-3">Les plus pertinentes</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Compétences</th>
+                <th>Fréquence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let skill of filteredTopSkills">
+                <td>{{ skill.name }}</td>
+                <td>{{ skill.frequency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique des compétences globales -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="skillsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphiques des fréquences des compétences par catégorie de seniorité -->
+    <div class="row mb-4" *ngIf="analytics">
+      <div class="col-md-4" *ngFor="let level of seniorityLevels">
+        <div class="card">
+          <div class="card-body">
+            <canvas [id]="level + 'SkillsChart'"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

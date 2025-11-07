@@ -1,0 +1,154 @@
+<!-- En-tête -->
+<header class="header">
+  <div class="header-container">
+    <!-- Logo Sofrecom à gauche -->
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo-img">
+    </div>
+    <!-- Informations utilisateur à droite -->
+    <div class="user-info">
+      <img src="assets/user.png" alt="User Icon" class="user-icon">
+      <div class="user-details">
+        <span class="username">{{ username }}</span>
+        <span class="manager-name" *ngIf="managerName !== 'Aucun'">Manager: {{ managerName }}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Conteneur principal avec sidebar (pour les managers) et contenu -->
+<div class="main-container">
+  <!-- Sidebar (affichée uniquement pour les managers) -->
+  <div class="sidebar" *ngIf="userRole === 'manager'">
+    <h3 class="sidebar-title">
+      <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+    </h3>
+    <ul class="sidebar-menu">
+      <li>
+        <a [routerLink]="['/manager-space']">
+          <img src="assets/cv-icon.png" alt="CV Icon" class="menu-icon"> CVs équipe
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/kpi-dashboard']">
+          <img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/choose-cv-actions']">
+          <img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/upload-job-description']">
+          <img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Fiche de poste
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="upload-job-container" [ngClass]="{'with-sidebar': userRole === 'manager'}">
+    <div class="upload-content animate-in">
+      <h2 class="upload-title">Téléverser une fiche de poste</h2>
+      <div class="upload-form">
+        <div class="form-group">
+          <!-- Bouton personnalisé pour choisir un fichier PDF -->
+          <div class="file-input-wrapper">
+            <button class="custom-file-button" (click)="triggerFileInput()">Choisir un fichier PDF</button>
+            <input type="file" id="fileInput" accept=".pdf" (change)="onFileSelected($event)" #fileInput hidden>
+            <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button (click)="uploadFile()" [disabled]="!selectedFile || !isJobDescription">Téléverser</button>
+          <!-- Bouton pour voir le PDF, affiché uniquement après un upload réussi -->
+          <button *ngIf="uploadedFileId" class="view-pdf-button" (click)="viewUploadedFile()">Voir le PDF</button>
+        </div>
+        <p *ngIf="message" class="success-message">{{ message }}</p>
+        <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+      </div>
+      <!-- Barre de chargement animée (déplacement horizontal) -->
+      <div class="progress-bar" *ngIf="isUploading">
+        <div class="progress"></div>
+      </div>
+      <!-- Case à cocher en dessous de la barre de chargement -->
+      <div class="checkbox-container">
+        <input
+          type="checkbox"
+          id="isJobDescription"
+          [(ngModel)]="isJobDescription"
+        />
+        <label for="isJobDescription" class="checkbox-label">
+          Fiche de poste générée par Sof'Talent
+        </label>
+      </div>
+
+      <!-- Récapitulatif -->
+      <div class="summary-container" *ngIf="jobTitle && uploadedFileId">
+        <h3 class="summary-title">Récapitulatif de la fiche de poste</h3>
+        <div class="summary-box">
+          <p><strong>Titre du poste :</strong> {{ jobTitle }}</p>
+          <p><strong>Années d'expérience requises :</strong> {{ yearsExperience }} an{{ yearsExperience > 1 ? 's' : '' }}</p>
+          <p><strong>Mots-clés :</strong> {{ keywords.join(', ') }}</p>
+        </div>
+      </div>
+
+      <!-- Tableau des résultats de matching (affiché si showDetail est false) -->
+      <div class="matching-results-container" *ngIf="matchingResults.length > 0 && !showDetail">
+        <h3 class="matching-title">Résultats de correspondance</h3>
+        <table class="matching-table">
+          <thead>
+            <tr>
+              <th>Score final (%)</th>
+              <th>Collaborateur</th>
+              <th>Manager</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of matchingResults">
+              <td>{{ result.match_percentage.toFixed(1) }}</td>
+              <td>{{ result.username || 'Inconnu' }}</td>
+              <td>{{ result.manager || 'Aucun' }}</td>
+              <td>
+                <button class="action-btn view-btn" (click)="viewCv(result.cv_id)">Voir CV</button>
+                <button class="action-btn download-btn" (click)="downloadCv(result.cv_id)">Télécharger</button>
+                <button class="action-btn detail-btn" (click)="showDetailReport(result.cv_id)">Plus de détails</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Rapport détaillé (affiché lorsque showDetail est true) -->
+      <div class="detail-report-container" *ngIf="showDetail" [@fadeAnimation]>
+        <div class="detail-report-content">
+          <h3 class="detail-title">Rapport Comparatif</h3>
+          <button class="close-btn" (click)="closeDetailReport()">Moins de détails</button>
+          <div class="report-section">
+            <h4>Informations sur le CV</h4>
+            <p><strong>Titre actuel :</strong> {{ selectedResult.title || 'Non spécifié' }}</p>
+            <p><strong>Années d'expérience :</strong> {{ selectedResult.annees_experience || 0 }} ans</p>
+            <p><strong>Compétences :</strong> {{ (selectedResult.skills || []).join(', ') }}</p>
+          </div>
+          <div class="report-section">
+            <h4>Informations sur la fiche de poste</h4>
+            <p><strong>Titre :</strong> {{ jobTitle }}</p>
+            <p><strong>Années d'expérience requises :</strong> {{ yearsExperience }} ans</p>
+            <p><strong>Mots-clés :</strong> {{ keywords.join(', ') }}</p>
+          </div>
+          <div class="report-section">
+            <h4>Scores de correspondance</h4>
+            <p><strong>Similitude du titre :</strong> {{ selectedResult.raw_scores?.title_similarity || 0 }}%</p>
+            <p><strong>Similitude de l'expérience :</strong> {{ selectedResult.raw_scores?.experience_similarity || 0 }}%</p>
+            <p><strong>Similitude des compétences :</strong> {{ selectedResult.raw_scores?.skills_similarity || 0 }}%</p>
+            <p><strong>Score final :</strong> {{ selectedResult.match_percentage.toFixed(1) }}%</p>
+            <p><strong>Compétences correspondantes :</strong> {{ (selectedResult.matched_skills || []).join(', ') }}</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

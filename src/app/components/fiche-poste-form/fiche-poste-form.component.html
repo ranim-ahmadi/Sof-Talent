@@ -1,0 +1,130 @@
+<div class="form-container">
+  <div class="logo-container">
+    <img src="assets/logo.png" alt="Logo Sofrecom" class="logo">
+  </div>
+
+  <h2 class="form-title">Créer une fiche de poste</h2>
+
+  <form [formGroup]="fichePosteForm" (ngSubmit)="onSubmit()" class="cv-form">
+    <div class="form-section">
+      <!-- Titre du poste -->
+      <div class="form-field">
+        <label for="title">Titre du poste</label>
+        <input id="title" formControlName="title" required>
+        <span class="error" *ngIf="fichePosteForm.get('title')?.hasError('required') && fichePosteForm.get('title')?.touched">
+          Le titre est requis
+        </span>
+      </div>
+
+      <!-- Missions -->
+      <div class="form-field">
+        <label for="job_objectives">Missions</label>
+        <textarea id="job_objectives" formControlName="job_objectives" (input)="adjustTextareaHeight($event)" required></textarea>
+        <span class="error" *ngIf="fichePosteForm.get('job_objectives')?.hasError('required') && fichePosteForm.get('job_objectives')?.touched">
+          Les missions sont requises
+        </span>
+      </div>
+
+      <!-- Activités principales -->
+      <div class="form-field">
+        <label for="main_tasks">Activités principales</label>
+        <textarea id="main_tasks" formControlName="main_tasks" (input)="adjustTextareaHeight($event)" required></textarea>
+        <span class="error" *ngIf="fichePosteForm.get('main_tasks')?.hasError('required') && fichePosteForm.get('main_tasks')?.touched">
+          Les activités sont requises
+        </span>
+      </div>
+
+      <!-- Section Profil -->
+      <div class="profile-section">
+        <div class="form-field">
+          <label>Profil</label>
+          <div formGroupName="profile">
+            <!-- Formation -->
+            <div class="form-field">
+              <label for="education" class="small-label">Formation</label>
+              <input type="text" id="education" formControlName="education" required>
+              <span class="error" *ngIf="fichePosteForm.get('profile.education')?.hasError('required') && fichePosteForm.get('profile.education')?.touched">
+                La formation est requise
+              </span>
+            </div>
+
+            <!-- Nombre d'années d'expérience (général) -->
+            <div class="form-field">
+              <label for="total_experience_years" class="small-label">Nombre d'années d'expérience </label>
+              <input type="number" id="total_experience_years" formControlName="total_experience_years" min="0" required>
+              <span class="error" *ngIf="fichePosteForm.get('profile.total_experience_years')?.hasError('required') && fichePosteForm.get('profile.total_experience_years')?.touched">
+                Le nombre d'années est requis
+              </span>
+              <span class="error" *ngIf="fichePosteForm.get('profile.total_experience_years')?.hasError('min') && fichePosteForm.get('profile.total_experience_years')?.touched">
+                Le nombre d'années doit être positif
+              </span>
+            </div>
+
+            <!-- Nombre d'années d'expérience en tant que -->
+            <div class="form-field experience-specific-row">
+              <div class="form-row">
+                <div class="form-field experience-years">
+                  <label for="specific_experience_years" class="small-label">
+                    Nombre d'années d'expérience <span class="optional-label">(facultatif)</span>
+                  </label>
+                  <input type="number" id="specific_experience_years" formControlName="specific_experience_years" min="0">
+                  <span class="error" *ngIf="fichePosteForm.get('profile.specific_experience_years')?.hasError('min') && fichePosteForm.get('profile.specific_experience_years')?.touched">
+                    Le nombre d'années doit être positif
+                  </span>
+                </div>
+                <div class="form-field experience-role">
+                  <label for="experience_role" class="small-label">
+                    En tant que <span class="optional-label">(facultatif)</span>
+                  </label>
+                  <input type="text" id="experience_role" formControlName="experience_role">
+                </div>
+              </div>
+              <span class="error" *ngIf="fichePosteForm.get('profile')?.hasError('experienceMismatch') && fichePosteForm.get('profile')?.touched">
+                Le nombre d’années d’expérience spécifique ne peut pas dépasser le nombre total d’années d’expérience.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compétences techniques -->
+      <div class="form-field">
+        <label for="technical_skills">Compétences techniques</label>
+        <textarea id="technical_skills" formControlName="technical_skills" (input)="adjustTextareaHeight($event)" required></textarea>
+        <span class="error" *ngIf="fichePosteForm.get('technical_skills')?.hasError('required') && fichePosteForm.get('technical_skills')?.touched">
+          Les compétences techniques sont requises
+        </span>
+      </div>
+
+      <!-- Section pour les mots-clés -->
+      <div class="form-field keywords-section">
+        <div class="keywords-header">
+          <label>Mots-clés</label>
+          <button type="button" (click)="addKeyword()" class="add-button">+</button>
+        </div>
+        <div formArrayName="keywords">
+          <div *ngFor="let keyword of keywordsFormArray.controls; let i = index" class="keyword-item">
+            <input [formControlName]="i" />
+            <button type="button" (click)="removeKeyword(i)" class="remove-button">×</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qualités personnelles -->
+      <div class="form-field">
+        <label for="personal_qualities">Qualités personnelles</label>
+        <textarea id="personal_qualities" formControlName="personal_qualities" (input)="adjustTextareaHeight($event)"></textarea>
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" [disabled]="isLoading || fichePosteForm.invalid">
+          {{ isLoading ? 'Traitement en cours...' : 'Enregistrer' }}
+        </button>
+      </div>
+
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+  </form>
+</div>

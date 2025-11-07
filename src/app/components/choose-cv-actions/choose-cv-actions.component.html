@@ -1,0 +1,225 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo Sofrecom à gauche -->
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo-img">
+    </div>
+
+    <!-- Logo centré à la place du titre -->
+    <div class="title-container">
+      <img src="assets/soff.png" alt="Logo Sof'Talent" class="logo-title">
+    </div>
+
+    <!-- Utilisateur à droite -->
+    <div class="user-info">
+      <div class="notification-bell" (click)="toggleNotificationMenu()">
+        🔔
+        <span class="notification-badge" *ngIf="getUnreadCount() > 0">{{ getUnreadCount() }}</span>
+      </div>
+      <div class="notification-menu" *ngIf="showNotificationMenu">
+        <div class="notification" *ngFor="let notification of notifications">
+          <span class="message">{{ notification.message }} ({{ notification.created_at | date:'short' }})</span>
+        </div>
+      </div>
+      <img src="assets/user.png" alt="User Icon" class="user-icon">
+      <span class="username">{{ username }}</span>
+      <button class="logout-btn" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</header>
+
+<!-- Conteneur principal avec sidebar (pour les managers) et contenu -->
+<div class="main-container">
+  <!-- Sidebar (affichée uniquement pour les managers) -->
+  <div class="sidebar" *ngIf="userRole === 'manager'">
+    <h3 class="sidebar-title">
+      <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+    </h3>
+    <ul class="sidebar-menu">
+      <li>
+        <a [routerLink]="['/manager-space']">
+          <img src="assets/cv-icon.png" alt="CV Icon" class="menu-icon"> CVs équipe
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/fiche-poste-form']">
+          <img src="assets/pdf-file.png" alt="CV Icon" class="menu-icon"> Créer fiche de poste
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/kpi-dashboard']">
+          <img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI
+        </a>
+      </li>
+      <li>
+        <a (click)="toggleSearchResults()" style="cursor: pointer;">
+          <img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/upload-job-description']">
+          <img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Téléverser fiche de poste
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/job-history']">
+          <img src="assets/historique.png" alt="History Icon" class="menu-icon"> Historique fiches de poste
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="choose-cv-container" [ngClass]="{'with-sidebar': userRole === 'manager'}">
+    <!-- Page initiale -->
+    <div class="overlay" *ngIf="!showCvList && !showCvListEN && !showSearchResults">
+      <div class="content">
+        <!-- Indicateur de chargement -->
+        <p *ngIf="isLoading" class="loading-text">Chargement...</p>
+
+        <!-- Boutons pour actions CV -->
+        <div *ngIf="!isLoading">
+          <div class="links">
+            <button class="btn-orange" (click)="createCv()">Ajouter CV</button>
+            <button class="btn-orange" (click)="toggleCvList()">Voir la liste des CVs en Français</button>
+            <button class="btn-orange" (click)="toggleCvListEN()">Voir la liste des CVs en Anglais</button>
+          </div>
+
+          <!-- Message d’erreur -->
+          <p class="error" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre de recherche et tableau des résultats (pour les managers) -->
+    <div class="search-results-container" *ngIf="showSearchResults">
+      <div class="search-header">
+        <h3>Rechercher par compétence</h3>
+        <button class="return-btn mb-3" (click)="toggleSearchResults()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a.5.5 0 0 1-.5.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Barre de recherche -->
+      <div class="search-container">
+        <input type="text" class="form-control" placeholder="" [(ngModel)]="searchTerm" (input)="filterCVs()">
+      </div>
+
+      <!-- Indicateur de chargement -->
+      <p *ngIf="isLoading" class="loading-text">Chargement...</p>
+
+      <!-- Message d’erreur -->
+      <p class="error" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</p>
+
+      <!-- Tableau des résultats -->
+      <div class="cv-table-container" *ngIf="!isLoading && filteredCvs.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cv of filteredCvs">
+              <td>{{ cv.username ?? 'Utilisateur inconnu' }}</td>
+              <td>{{ cv.email ?? 'Email non disponible' }}</td>
+              <td>
+                <button class="action-btn btn-visualiser" (click)="previewCv(cv)">Visualiser</button>
+                <button class="action-btn btn-telecharger" (click)="downloadCv(cv)">Télécharger</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tableau des CVs français -->
+    <div class="cv-table-container" *ngIf="!isLoading && showCvList">
+      <button class="return-btn mb-3" (click)="toggleCvList()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a.5.5 0 0 1-.5.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+        </svg>
+      </button>
+
+      <div *ngIf="cvsFR.length === 0" class="alert alert-info">
+        Aucun CV trouvé en français. Créez un nouveau CV pour commencer.
+      </div>
+
+      <table *ngIf="cvsFR.length > 0">
+        <thead>
+          <tr>
+            <th>Poste actuel</th>
+            <th>Date de création</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cv of getPaginatedCvsFR()">
+            <td>{{ cv.poste_actuel ?? 'Non spécifié' }}</td>
+            <td>{{ cv.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <button class="action-btn btn-visualiser" (click)="previewCv(cv, 'fr')">Visualiser</button>
+              <button class="action-btn btn-telecharger" (click)="downloadCv(cv)">Télécharger</button>
+              <button class="action-btn btn-modifier" (click)="updateCv(cv, 'fr')">Modifier</button>
+              <button class="action-btn" (click)="deleteCv(cv, 'fr')">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Contrôles de pagination avec numéros -->
+      <div class="pagination-controls" *ngIf="cvsFR.length > 0">
+        <button class="action-btn" (click)="setPageFR(currentPageFR - 1)" [disabled]="currentPageFR === 1"><</button>
+        <ng-container *ngFor="let page of [].constructor(totalPagesFR); let i = index">
+          <button class="action-btn" (click)="setPageFR(i + 1)" [class.active]="currentPageFR === i + 1">{{ i + 1 }}</button>
+        </ng-container>
+        <button class="action-btn" (click)="setPageFR(currentPageFR + 1)" [disabled]="currentPageFR === totalPagesFR">></button>
+      </div>
+    </div>
+
+    <!-- Tableau des CVs anglais -->
+    <div class="cv-table-container" *ngIf="!isLoading && showCvListEN">
+      <button class="return-btn mb-3" (click)="toggleCvListEN()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a.5.5 0 0 1-.5.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+        </svg>
+      </button>
+
+      <div *ngIf="cvsEN.length === 0" class="alert alert-info">
+        Aucun CV trouvé en anglais. Créez un nouveau CV pour commencer.
+      </div>
+
+      <table *ngIf="cvsEN.length > 0">
+        <thead>
+          <tr>
+            <th>Poste actuel</th>
+            <th>Date de création</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cv of getPaginatedCvsEN()">
+            <td>{{ cv.poste_actuel ?? 'Non spécifié' }}</td>
+            <td>{{ cv.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <button class="action-btn btn-visualiser" (click)="previewCv(cv, 'en')">Visualiser</button>
+              <button class="action-btn btn-telecharger" (click)="downloadCv(cv, 'en')">Télécharger</button>
+              <button class="action-btn" (click)="deleteCv(cv, 'en')">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Contrôles de pagination avec numéros -->
+      <div class="pagination-controls" *ngIf="cvsEN.length > 0">
+        <button class="action-btn" (click)="setPageEN(currentPageEN - 1)" [disabled]="currentPageEN === 1"><</button>
+        <ng-container *ngFor="let page of [].constructor(totalPagesEN); let i = index">
+          <button class="action-btn" (click)="setPageEN(i + 1)" [class.active]="currentPageEN === i + 1">{{ i + 1 }}</button>
+        </ng-container>
+        <button class="action-btn" (click)="setPageEN(currentPageEN + 1)" [disabled]="currentPageEN === totalPagesEN">></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<div class="notification-container" *ngIf="notifications.length > 0">
+  <div class="notification" *ngFor="let notification of notifications" [ngClass]="{'new': notifications.indexOf(notification) === 0}">
+    {{ notification }}
+  </div>
+</div>

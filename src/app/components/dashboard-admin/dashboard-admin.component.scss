@@ -1,0 +1,249 @@
+// Couleurs principales
+$dark-blue: #3333ad;
+$orange-main: #FF8C00;
+$white: #fff;
+$grey-light: #f8f9fa;
+$dark-grey: #343a40;
+
+// Container principal
+.dashboard-container {
+  padding: 20px;
+  background-color: $grey-light;
+}
+
+// Header
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $white;
+  padding: 15px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(255, 140, 0, 0.4); // Ombre orangée
+
+  .logo {
+    height: 70px; // Taille du logo Sofrecom
+  }
+
+  .secondary-logo {
+    height: 90px; // Taille ajustée pour le logo Soff (peut être modifié selon besoin)
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05); // Effet de zoom au survol
+    }
+  }
+}
+
+// Messages d'erreur
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffe6e6;
+  border: 1px solid #ff0000;
+  border-radius: 3px;
+}
+
+// Style du filtre
+.filter-container {
+  display: flex;
+  align-items: center;
+  background: $white;
+  padding: 8px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(255, 140, 0, 0.4); // Ombre orangée
+
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+    color: $dark-grey;
+  }
+
+  select {
+    padding: 6px 10px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: $white;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: $dark-blue;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: darken($dark-blue, 10%);
+      box-shadow: 0px 0px 5px rgba(0, 51, 173, 0.5);
+    }
+  }
+}
+
+// Style spécifique pour le champ de recherche
+input[type="text"] {
+  width: 200px;
+  margin-left: 20px;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: $white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: $dark-blue;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: darken($dark-blue, 10%);
+    box-shadow: 0px 0px 5px rgba(0, 51, 173, 0.5);
+  }
+}
+
+// Style de la liste déroulante des rôles
+.user-list select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 2px solid $dark-blue;
+  border-radius: 5px;
+  background-color: $white;
+  color: $dark-grey;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  appearance: none;
+
+  &:hover {
+    border-color: lighten($dark-blue, 10%);
+    box-shadow: 0px 0px 5px rgba(0, 51, 173, 0.5);
+  }
+
+  &:focus {
+    border-color: $orange-main;
+    box-shadow: 0px 0px 8px rgba(255, 140, 0, 0.6);
+  }
+}
+
+// Style du champ de saisie pour le matricule du manager
+.user-list input[type="text"] {
+  width: 150px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 2px solid $dark-blue;
+  border-radius: 5px;
+  background-color: $white;
+  color: $dark-grey;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: lighten($dark-blue, 10%);
+    box-shadow: 0px 0px 5px rgba(0, 51, 173, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $orange-main;
+    box-shadow: 0px 0px 8px rgba(255, 140, 0, 0.6);
+  }
+}
+
+// Tableau des utilisateurs
+.user-list {
+  background: $white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(255, 140, 0, 0.4);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      border: 1px solid $grey-light;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: $dark-blue;
+      color: $white;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 5px; // Espacement entre les boutons
+
+    .action-btn {
+      padding: 4px 8px; // Taille réduite
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid $dark-blue;
+      border-radius: 4px;
+      background-color: $white;
+      color: $dark-blue;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+
+      &:hover {
+        background-color: lighten($dark-blue, 40%);
+        border-color: lighten($dark-blue, 10%);
+        box-shadow: 0px 0px 5px rgba(0, 51, 173, 0.5);
+      }
+
+      &:focus {
+        border-color: $orange-main;
+        box-shadow: 0px 0px 8px rgba(255, 140, 0, 0.6);
+      }
+    }
+  }
+}
+
+// Pagination
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 15px;
+
+  .action-btn {
+    padding: 4px 8px;
+    border: 1px solid $orange-main;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: $white;
+    color: $orange-main;
+    transition: all 0.3s ease;
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      background-color: $orange-main;
+      color: $white;
+      transform: none;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    &.active {
+      background-color: $orange-main;
+      color: $white;
+      cursor: default;
+    }
+  }
+}

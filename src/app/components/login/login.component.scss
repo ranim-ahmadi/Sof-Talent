@@ -1,0 +1,85 @@
+$orange-main: #FF8C00;
+$orange-soft: rgba(255, 140, 0, 0.2);
+$orange-shadow: rgba(255, 140, 0, 0.3);
+$white: #fff;
+
+.login-container {
+  background-color: $white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  background-color: $white;
+  border: 1px solid $orange-soft;
+  box-shadow: 0px 4px 10px $orange-shadow;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+}
+
+// Logo + titre
+.softalent-title {
+  color: $orange-main;
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin-top: 0.5rem;
+}
+
+// Formulaire
+.form-group {
+  label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: $orange-main;
+  }
+
+  .form-control {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 0.25rem;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: $orange-main;
+      box-shadow: 0px 0px 5px rgba(255, 140, 0, 0.5);
+      outline: none;
+    }
+  }
+}
+
+// Bouton
+.btn-orange {
+  background-color: $orange-main;
+  color: $white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+  width: 100%;
+
+  &:hover {
+    background-color: darken($orange-main, 10%);
+  }
+}
+
+// Lien
+.signup-text {
+  font-size: 0.75rem;
+  color: #666;
+
+  a {
+    color: $orange-main;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

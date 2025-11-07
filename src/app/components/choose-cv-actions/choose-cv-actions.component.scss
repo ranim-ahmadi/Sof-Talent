@@ -1,0 +1,631 @@
+/* src/app/choose-cv-actions/choose-cv-actions.component.scss */
+
+/* Couleurs */
+$orange-main: #FF8C00;
+$blue-main: #007bff;
+$white: #fff;
+$soft-white: #f9f9fb;
+$soft-blue: #e3f0fa;
+$soft-grey: #6c757d;
+$shadow-color: rgba(0, 0, 0, 0.05);
+$dark-blue: #3333ad;
+$grey-light: #f8f9fa;
+$dark-grey: #343a40;
+$light-grey: #f1f3f5;
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: $soft-white;
+  box-shadow: 0 4px 10px $shadow-color;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 100%;
+    position: relative;
+
+    .logo {
+      .logo-img {
+        height: 40px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    .title-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      .logo-title {
+        height: 50px;
+        width: auto;
+        max-width: 250px;
+      }
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .notification-bell {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+        margin-right: 10px;
+        color: $orange-main;
+
+        &:hover {
+          color: darken($orange-main, 10%);
+        }
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 10px;
+        min-width: 16px;
+        text-align: center;
+      }
+
+      .notification-menu {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1001;
+        padding: 5px 0;
+
+        .notification {
+          padding: 5px 10px;
+          font-size: 12px;
+          color: $dark-grey;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &:hover {
+            background-color: #f1f1f1;
+          }
+        }
+      }
+
+      .user-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: $white;
+        border: 2px solid $soft-blue;
+        padding: 2px;
+      }
+
+      .username {
+        font-size: 13px;
+        font-weight: 500;
+        color: $soft-grey;
+      }
+
+      .managername {
+        font-size: 13px;
+        font-weight: 500;
+        color: $soft-grey;
+        display: block; /* Pour empiler sous username */
+      }
+
+      .logout-btn {
+        background: none;
+        border: none;
+        color: #000;
+        font-size: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 4px 6px;
+        transition: color 0.3s, text-decoration 0.3s;
+
+        &:hover {
+          color: #333;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+/* Conteneur principal */
+.main-container {
+  display: flex;
+  min-height: 100vh;
+  margin-top: 60px;
+}
+
+/* Sidebar (affichée uniquement pour les managers) */
+.sidebar {
+  width: 280px;
+  background-color: $light-grey;
+  color: $dark-grey;
+  padding: 20px;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 60px);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+
+  .sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: $dark-grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .sidebar-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 10px;
+
+      a {
+        color: $dark-grey;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        gap: 8px;
+
+        &:hover {
+          background-color: $soft-blue;
+          color: $orange-main;
+        }
+      }
+    }
+  }
+
+  .menu-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Contenu principal */
+.choose-cv-container {
+  background-image: url('/assets/back.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 80px;
+  flex: 1;
+
+  &.with-sidebar {
+    margin-left: 280px;
+  }
+}
+
+.overlay {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px $shadow-color;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.content {
+  text-align: center;
+  color: $soft-grey;
+
+  h3 {
+    color: $soft-grey;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style pour le titre "Sof'Talent" */
+.page-title {
+  color: $dark-blue;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba($orange-main, 0.3);
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  color: $soft-grey;
+  font-style: italic;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.btn-orange {
+  display: inline-block;
+  padding: 10px 20px;
+  color: $white;
+  background-color: $orange-main;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid $orange-main;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba($orange-main, 0.2);
+
+  &:hover {
+    background-color: darken($orange-main, 10%);
+    border-color: darken($orange-main, 10%);
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba($orange-main, 0.3);
+  }
+
+  &:active {
+    background-color: darken($orange-main, 15%);
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    background-color: lighten($soft-grey, 20%);
+    border-color: lighten($soft-grey, 20%);
+    color: $soft-grey;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Classe pour réduire la taille des boutons */
+.btn-sm {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  margin: 2px;
+}
+
+.action-btn, .delete-btn {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  margin-right: 5px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.page-item {
+  margin: 0 2px;
+}
+
+.page-link {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Conteneur du tableau (directement dans la page) */
+.cv-table-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 10px;
+
+  h3 {
+    color: $dark-grey;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $white;
+    border-radius: 8px;
+    overflow: hidden;
+
+    th, td {
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 1px solid $light-grey;
+      border-right: 1px solid rgba($light-grey, 0.3);
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    th {
+      background-color: $soft-grey;
+      color: $white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    td {
+      font-size: 0.85rem;
+      color: $dark-grey;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    tr {
+      &:hover {
+        background-color: $soft-white;
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+
+    .action-btn {
+      padding: 4px 10px;
+      margin-right: 6px;
+      border: 1px solid $orange-main;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: $white;
+      color: $orange-main;
+      transition: all 0.3s ease;
+      box-shadow: none;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:hover {
+        background-color: $orange-main;
+        color: $white;
+        transform: none;
+      }
+
+      &:active {
+        transform: none;
+        box-shadow: none;
+      }
+
+      &.btn-visualiser,
+      &.btn-telecharger,
+      &.btn-modifier {
+        border-color: $orange-main;
+        color: $orange-main;
+
+        &:hover {
+          background-color: $orange-main;
+          color: $white;
+        }
+      }
+    }
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+
+    button {
+      padding: 4px 8px;
+      border: 1px solid $orange-main;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      background-color: $white;
+      color: $orange-main;
+      transition: all 0.3s ease;
+      box-shadow: none;
+
+      &:hover:not(:disabled) {
+        background-color: $orange-main;
+        color: $white;
+        transform: none;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      &.active {
+        background-color: $orange-main;
+        color: $white;
+        cursor: default;
+      }
+    }
+  }
+
+  .alert-info {
+    background-color: $soft-white;
+    color: $dark-grey;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    text-align: center;
+    box-shadow: 0 3px 8px $shadow-color;
+    border-left: 4px solid $orange-main;
+  }
+
+  .return-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $orange-main;
+    font-size: 1.2rem;
+    padding: 5px;
+
+    &:hover {
+      color: darken($orange-main, 10%);
+    }
+  }
+}
+
+/* Tableau des CVs (style ancien remplacé par le nouveau ci-dessus) */
+.user-list {
+  display: none;
+}
+
+/* Bouton d'action (style ancien remplacé par le nouveau ci-dessus) */
+.delete-btn {
+  display: none;
+}
+
+/* Styles pour la section de recherche */
+.search-results-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: $soft-grey;
+
+  .search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h3 {
+      color: $soft-grey;
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  .search-container {
+    margin-bottom: 20px;
+    text-align: center;
+
+    .form-control {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid $grey-light;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px $shadow-color;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $orange-main;
+        box-shadow: 0 0 8px rgba($orange-main, 0.3);
+      }
+    }
+  }
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.language-select {
+  padding: 5px 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: #888;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #ff6200;
+    box-shadow: 0 0 5px rgba(255, 98, 0, 0.3);
+  }
+
+  width: 110px;
+}
+
+.language-select option {
+  padding: 5px;
+  background-color: #fff;
+  color: #333;
+}

@@ -1,0 +1,91 @@
+<div class="dashboard-container">
+  <!-- Contenu Principal -->
+  <div class="main-content">
+    <header>
+      <img src="assets/logo.png" alt="Logo Sofrecom" class="logo">
+      <img src="assets/sof.png" alt="Logo Soff" class="secondary-logo">
+    </header>
+
+    <!-- Affichage des messages d'erreur -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Filtre des utilisateurs -->
+    <div class="filter-container">
+      <label for="roleFilter">Filtrer par rôle :</label>
+      <select id="roleFilter" [(ngModel)]="selectedRole" (change)="filterByRole()">
+        <option value="">Tous</option>
+        <option value="employee">Collaborateur</option>
+        <option value="manager">Manager</option>
+      </select>
+    </div>
+
+    <!-- Espace entre les filtres -->
+    <div class="space"></div>
+
+    <div class="filter-container">
+      <label for="matriculeSearch">Recherche :</label>
+      <input
+        type="text"
+        id="matriculeSearch"
+        [(ngModel)]="matriculeSearch"
+        (input)="onSearchChange()"
+        placeholder="Entrez matricule"
+      >
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="user-list">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom de collaborateur</th>
+            <th>Matricule</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Matricule du Manager</th>
+            <th>Nom du Manager</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers">
+            <td>{{ user.username }}</td>
+            <td>{{ user.matricule }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <select [(ngModel)]="user.role" (change)="saveUserRole(user)">
+                <option value="employee">Collaborateur</option>
+                <option value="manager">Manager</option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="user.manager_matricule"
+                (input)="getManagerName(user)"
+                placeholder="Saisir matricule du manager"
+              >
+            </td>
+            <td>{{ user.manager__username || 'Aucun' }}</td>
+            <td>
+              <div class="button-group">
+                <button (click)="updateManagerMatricule(user)" class="action-btn update-btn">Enregistrer</button>
+                <button (click)="deleteUser(user.id)" class="action-btn delete-btn">Supprimer</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Contrôles de pagination -->
+      <div class="pagination-controls" *ngIf="filteredUsers.length > 0">
+        <button class="action-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1"><</button>
+        <ng-container *ngFor="let page of visiblePages">
+          <button class="action-btn" (click)="setPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+        </ng-container>
+        <button class="action-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages">></button>
+      </div>
+    </div>
+  </div>
+</div>

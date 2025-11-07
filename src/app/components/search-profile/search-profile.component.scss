@@ -1,0 +1,88 @@
+/* src/app/search-profile/search-profile.component.scss */
+.main-container {
+    display: flex;
+  }
+  
+  .content-container {
+    padding: 20px;
+    flex-grow: 1;
+  
+    &.with-sidebar {
+      margin-left: 200px;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+  }
+  
+  .search-bar {
+    margin-bottom: 20px;
+  
+    input {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+  }
+  
+  .results-container {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .loading-text {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .error {
+    color: red;
+    font-weight: 500;
+  }
+  
+  .alert-info {
+    background-color: #e7f3fe;
+    color: #31708f;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .action-btn {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  
+    &.btn-visualiser {
+      background-color: #2ecc71;
+      color: white;
+    }
+  
+    &.btn-telecharger {
+      background-color: #3498db;
+      color: white;
+    }
+  }

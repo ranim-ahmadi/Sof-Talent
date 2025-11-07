@@ -1,0 +1,120 @@
+/* SCSS */
+// Couleurs
+$orange-main: #FF8C00;
+$blue-main: #007bff;
+$white: #fff;
+$beige-light: #f5f5dc;
+
+// Conteneur principal sans fond d'image
+.home-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+// Overlay avec fond blanc
+.overlay {
+  background-color: $white;
+  padding: 50px 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// Logo Sofrecom
+.logo img {
+  max-width: 250px;
+  margin-bottom: 30px;
+}
+
+// Section SofTalent
+.softalent-section {
+  margin: 30px 0 40px 0;
+}
+
+.softalent-logo img {
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.sof-text {
+  color: $orange-main;
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+.talent-text {
+  color: $orange-main;
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+// Conteneur des liens
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+// Style des boutons
+.btn-orange {
+  display: inline-block;
+  padding: 16px 28px;
+  color: $white;
+  background-color: $orange-main;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid $orange-main;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  
+  &:hover {
+    background-color: darken($orange-main, 10%);
+    border-color: darken($orange-main, 10%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba($orange-main, 0.3);
+  }
+  
+  &:active {
+    background-color: darken($orange-main, 15%);
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba($orange-main, 0.3);
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .overlay {
+    width: 95%;
+    padding: 30px 20px;
+  }
+  
+  .logo img {
+    max-width: 200px;
+  }
+  
+  .softalent-logo img {
+    max-width: 150px;
+  }
+  
+  .links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-orange {
+    width: 100%;
+    max-width: 200px;
+  }
+}

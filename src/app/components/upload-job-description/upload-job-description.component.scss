@@ -1,0 +1,551 @@
+/* Couleurs définies */
+$orange-main: #FF8C00;
+$orange-light: rgba(255, 140, 0, 0.1);
+$blue: #007BFF;
+$white: #fff;
+$dark-grey: #333333;
+$orange-shadow: rgba(255, 140, 0, 0.5);
+$green: #28a745;
+
+/* Ajout des nouvelles couleurs demandées */
+$gray-pastel: #E0E0E0;
+$greige: #D4CFC9;
+$taupe-dark: #8A7F77; /* Nouvelle couleur pour les boutons */
+
+/* Styles pour le header */
+.header {
+  background-color: #f5f5f5;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-img {
+  width: 700px;
+  height: auto;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.manager-name {
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Styles pour le conteneur principal */
+.main-container {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 60px;
+}
+
+/* Styles pour la sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-menu a:hover {
+  background-color: #e0e0e0;
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Styles pour le conteneur d'upload */
+.upload-job-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: $white;
+  padding: 40px;
+  margin-left: 0;
+}
+
+.upload-job-container.with-sidebar {
+  margin-left: 250px;
+}
+
+/* Style pour la section d'upload */
+.upload-content {
+  max-width: 900px;
+  width: 100%;
+  padding: 30px;
+  background-color: #fafafa;
+  border-radius: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.upload-title {
+  font-size: 20px;
+  color: $orange-main;
+  font-weight: bold;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Style pour le bouton personnalisé "Choisir un fichier PDF" */
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.custom-file-button {
+  padding: 8px 16px;
+  background-color: $orange-main;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.custom-file-button:hover {
+  background-color: darken($orange-main, 10%);
+  transform: scale(1.05);
+  box-shadow: 0px 0px 10px $orange-shadow;
+}
+
+.custom-file-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.file-name {
+  font-size: 0.9em;
+  color: $dark-grey;
+  font-style: italic;
+}
+
+/* Conteneur pour les boutons d'action */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: $orange-main;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: darken($orange-main, 10%);
+  transform: scale(1.05);
+  box-shadow: 0px 0px 10px $orange-shadow;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Style spécifique pour le bouton "Voir le PDF" */
+.view-pdf-button {
+  padding: 10px 20px;
+  background-color: $orange-main;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.view-pdf-button:hover:not(:disabled) {
+  background-color: darken($orange-main, 10%);
+  transform: scale(1.05);
+  box-shadow: 0px 0px 10px $orange-shadow;
+}
+
+.view-pdf-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.success-message {
+  color: $green;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 0.9em;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 0.9em;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Barre de chargement animée (déplacement horizontal) */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: $orange-light;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.progress {
+  width: 100%;
+  height: 100%;
+  background-color: $orange-main;
+  animation: progressAnimation 5s linear infinite;
+}
+
+/* Animation de progression horizontale */
+@keyframes progressAnimation {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* Animation d'apparition pour la section d'upload */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation pour les messages */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animation pour le rapport détaillé */
+@keyframes fadeAnimation {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Style pour la case à cocher */
+.checkbox-container {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin: 0;
+  width: 18px;
+  height: 18px;
+}
+
+/* Styles pour le récapitulatif (modifié avec gris pastel et greige) */
+.summary-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $gray-pastel; /* Gris pastel pour le fond */
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.summary-title {
+  font-size: 18px;
+  color: $orange-main;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.summary-box {
+  padding: 15px;
+  background-color: $white;
+  border-radius: 8px;
+  border: 1px solid $greige; /* Bordure greige */
+}
+
+.summary-box p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: $dark-grey;
+}
+
+.summary-box p strong {
+  color: $orange-main;
+}
+
+/* Styles pour le tableau de matching */
+.matching-results-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $gray-pastel;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.matching-title {
+  font-size: 18px;
+  color: $orange-main;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.matching-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $greige;
+}
+
+.matching-table th,
+.matching-table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  color: $dark-grey;
+}
+
+.matching-table th {
+  background-color: $greige;
+  color: $dark-grey;
+  font-weight: 600;
+}
+
+.matching-table td {
+  border-bottom: 1px solid $greige;
+}
+
+.matching-table tr:last-child td {
+  border-bottom: none;
+}
+
+.matching-table tr:hover {
+  background-color: lighten($gray-pastel, 5%);
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-btn,
+.download-btn,
+.detail-btn {
+  background-color: $taupe-dark; /* Taupe foncé pour tous les boutons */
+  color: $white;
+}
+
+.view-btn:hover,
+.download-btn:hover,
+.detail-btn:hover {
+  background-color: darken($taupe-dark, 10%);
+  transform: scale(1.05);
+}
+
+/* Styles pour le rapport détaillé */
+.detail-report-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $gray-pastel;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeAnimation 0.3s ease-out;
+}
+
+.detail-report-content {
+  background-color: $white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid $greige;
+}
+
+.detail-title {
+  font-size: 20px;
+  color: $orange-main;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.close-btn {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 8px 16px;
+  background-color: $taupe-dark;
+  color: $white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  background-color: darken($taupe-dark, 10%);
+}
+
+.report-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  background-color: $gray-pastel;
+  border-radius: 10px;
+  border: 1px solid $greige;
+}
+
+.report-section h4 {
+  font-size: 16px;
+  color: $orange-main;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $greige;
+}
+
+.report-section p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: $dark-grey;
+  line-height: 1.5;
+}
+
+.report-section p strong {
+  color: $orange-main;
+  font-weight: 600;
+}
+
+.chart-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: $white;
+  border-radius: 10px;
+  border: 1px solid $greige;
+  text-align: center;
+}
+
+.chart-container canvas {
+  max-width: 100%;
+}

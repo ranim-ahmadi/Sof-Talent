@@ -1,0 +1,95 @@
+// Couleurs
+$orange-main: #FF8C00;
+$orange-border: rgba(255, 140, 0, 0.3);
+$white: #fff;
+$grey-text: #666;
+
+// Conteneur principal
+.register-container {
+  background-color: $white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Carte de formulaire
+.register-card {
+  background-color: $white;
+  border: 1.5px solid $orange-border;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(255, 140, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+// Titre
+.softalent-title {
+  color: $orange-main;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+// Bouton
+.btn-orange {
+  background-color: $orange-main;
+  color: $white;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: darken($orange-main, 10%);
+  }
+}
+
+// Texte secondaire
+.signup-text {
+  font-size: 0.7rem;
+  color: $grey-text;
+}
+
+// Lien orange
+.text-orange {
+  color: $orange-main;
+ 
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Champs
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    font-size: 12px;
+    font-weight: bold;
+    color: $orange-main;
+  }
+  form .form-group.text-center {
+  display: flex;
+  justify-content: center;
+}
+
+
+  input {
+    font-size: 12px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+
+    &:focus {
+      border-color: $orange-main;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+    }
+  }
+}

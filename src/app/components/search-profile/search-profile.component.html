@@ -1,0 +1,71 @@
+<!-- src/app/search-profile/search-profile.component.html -->
+<div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">
+        <img src="assets/manager-icon.png" alt="Manager Icon" class="sidebar-icon"> Espace Manager
+      </h3>
+      <ul class="sidebar-menu">
+        <li>
+          <a [routerLink]="['/choose-cv-actions']" routerLinkActive="active-link">
+            <img src="assets/home-icon.png" alt="Home Icon" class="menu-icon"> Accueil
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/kpi-dashboard']" routerLinkActive="active-link">
+            <img src="assets/dashboard-icon.png" alt="Dashboard Icon" class="menu-icon"> Dashboard KPI
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/search-profile']" routerLinkActive="active-link">
+            <img src="assets/search-icon.png" alt="Search Icon" class="menu-icon"> Recherche profil
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/upload-job-description']" routerLinkActive="active-link">
+            <img src="assets/upload-icon.png" alt="Upload Icon" class="menu-icon"> Fiche de poste
+          </a>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Contenu principal -->
+    <div class="content-container" [ngClass]="{'with-sidebar': true}">
+      <h2>Recherche de profils</h2>
+      <!-- Barre de recherche -->
+      <div class="search-bar">
+        <input type="text" [(ngModel)]="searchSkill" (input)="searchProfiles()" placeholder="Rechercher par compétence (ex: docker)" />
+      </div>
+      <!-- Indicateur de chargement -->
+      <p *ngIf="isLoading" class="loading-text">Chargement...</p>
+      <!-- Message d'erreur -->
+      <p class="error" *ngIf="errorMessage && !isLoading">{{ errorMessage }}</p>
+      <!-- Résultats de recherche -->
+      <div class="results-container" *ngIf="!isLoading">
+        <div *ngIf="searchResults.length === 0 && searchSkill" class="alert alert-info">
+          Aucun profil trouvé pour la compétence "{{ searchSkill }}".
+        </div>
+        <table *ngIf="searchResults.length > 0">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Compétences</th>
+              <th>Années d'expérience</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let profile of searchResults">
+              <td>{{ profile.username }}</td>
+              <td>{{ profile.skills }}</td>
+              <td>{{ profile.annees_experience }}</td>
+              <td>
+                <button class="action-btn btn-visualiser" (click)="previewCv(profile)">Visualiser</button>
+                <button class="action-btn btn-telecharger" (click)="downloadCv(profile)">Télécharger</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
