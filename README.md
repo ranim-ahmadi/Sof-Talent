@@ -1,5 +1,3 @@
-
-=======
 # Sof-Talent
 # 🧠 Sof'Talent Smart CV and Skills Management Platform
 
